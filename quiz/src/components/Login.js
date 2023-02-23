@@ -7,17 +7,18 @@ export default function Login() {
   return (
     <Center>
       <Card sx={{
-        width: '400px',
-        textAlign: 'center'
+        width: '400px'
       }}>
-        <CardContent>
+        <CardContent sx={{
+          textAlign: 'center'
+        }}>
           <Typography
             variant='h3'
             sx={{my: 3}}
           >Quiz App</Typography>
         <Box sx={{
           '& .MuiTextField-root': {
-            m: '1',
+            m: 1,
             width: '90%'
           }
         }}>
