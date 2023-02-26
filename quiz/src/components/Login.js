@@ -3,6 +3,9 @@ import { Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Center from './Center'
 import useForm from '../hooks/useForm'
+import { createAPIEndpoint, ENDPOINTS } from '../api'
+import useStateContext from '../hooks/useStateContext'
+import { useNavigate } from 'react-router-dom'
 
 const getFreshModel = () => ({
   name: '',
@@ -10,6 +13,9 @@ const getFreshModel = () => ({
 })
 
 export default function Login() {
+
+  const { context, setContext } = useStateContext();
+  const navigate = useNavigate();
 
   const {
     values,
@@ -21,20 +27,27 @@ export default function Login() {
 
   const login = e => {
     e.preventDefault();
-    if(validate())
-    console.log(values);
+    if (validate())
+      createAPIEndpoint(ENDPOINTS.participant)
+        .post(values)
+        .then(res => {
+          setContext({ participantId: res.data.participantId })
+          navigate('/quiz')
+        })
+        .catch(err => console.log(err))
   }
 
   const validate = () => {
     let temp = {}
     temp.email = (/\S+@\S+\.\S+/).test(values.email) ? "" : "Email is not valid."
-    temp.name = values.name!=""?"":"This field is required."
+    temp.name = values.name!==""?"":"This field is required."
     setErrors(temp)
-    return Object.values(temp).every(x=> x== "")
+    return Object.values(temp).every(x=> x=== "")
   }
   
   return (
     <Center>
+      {context.participantId}
       <Card sx={{
         width: '400px'
       }}>
