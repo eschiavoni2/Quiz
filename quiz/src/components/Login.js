@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import { Button, Card, CardContent, TextField, Typography } from '@mui/material'
 import { Box } from '@mui/system'
 import Center from './Center'
@@ -14,7 +14,7 @@ const getFreshModel = () => ({
 
 export default function Login() {
 
-  const { context, setContext } = useStateContext();
+  const { context, setContext, resetContext } = useStateContext();
   const navigate = useNavigate();
 
   const {
@@ -24,6 +24,11 @@ export default function Login() {
     setErrors,
     handleInputChange
   } = useForm(getFreshModel);
+
+  useEffect(() => {
+    resetContext()
+  }, [])
+  
 
   const login = e => {
     e.preventDefault();
@@ -47,7 +52,6 @@ export default function Login() {
   
   return (
     <Center>
-      {context.participantId}
       <Card sx={{
         width: '400px'
       }}>
